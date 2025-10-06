@@ -1,17 +1,37 @@
 package org.nigel;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Main {
     static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+        try {
+            FileReader fileReader = new FileReader("src/main/data.csv");
+            BufferedReader bufReader = new BufferedReader(fileReader);
+            String input;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
+            while((input = bufReader.readLine()) != null) {
+
+                String[] inputParse = input.split("\\|");
+                String UserId = inputParse[0];
+                String UserName = inputParse[1];
+                String HoursWorked = inputParse[2];
+                String PayRate = inputParse[3];
+
+                Employee employee = new Employee(Integer.parseInt(UserId), UserName, Double.parseDouble(HoursWorked), Double.parseDouble(PayRate));
+
+                System.out.println("====Employee Data====");
+                System.out.printf("\tName: %s\n", employee.getName());
+                System.out.printf("\tUser ID: %s\n", employee.getEmployeeId());
+                System.out.printf("\tHours Worked: %s\n", employee.getHoursWorked());
+                System.out.printf("\tPay Rate: %s\n", employee.getPayRate());
+                System.out.printf("\tGross Pay: %s\n", employee.getGrossPay());
+                System.out.println();
+            }
+            bufReader.close();
+        }catch(IOException e) {
+            e.printStackTrace();
         }
     }
 }
